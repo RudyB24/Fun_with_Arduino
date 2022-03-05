@@ -11,6 +11,9 @@
 #define ROTARY_FAST     10 // [ms] rotary fast rotation: change value by 10
 #define ROTARY_SLOW    200 // [ms] rotary slow rotation: change value by  1
 
+#define blink_LED        0 // number of the LED used for blinking
+#define fade_LED         1 // number of the LED used for fade
+#define encoder_LED      2 // number of the LED used for the encoder value
 
 #define BLINK_ON        50 // [ms]
 #define BLINK_OFF      450 // [ms]
@@ -28,8 +31,6 @@
 byte SW_pin[]  = {7,8};    // pin numbers of the switches (AND IN FUTURE: encoder)
 byte PB_pin[]  = {2,4,16}; // pin numbers of the pushbuttons, 16 is encoder-SW
 byte LED_pin[] = {3,5,6,9,10,11}; // pin numbers of the LED PWM outputs
-byte blink_LED = 0; // number of the LED used for blinking (0-5)
-byte fade_LED  = 1; // number of the LED used for fade (0-5)
 
 //////////////////////////////////////////////////////////////////////////
 // End of configuration
@@ -87,7 +88,7 @@ byte read_PB(byte i) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// function: read rotary encoder 
+// function: read encoder and determine slow or fast rotation
 //////////////////////////////////////////////////////////////////////////
 int read_encoder() {
   int increment;
@@ -165,7 +166,7 @@ void loop() {
 // Update an LED value if it's time, this creates a fade
 //////////////////////////////////////////////////////////////////////////
   if (micros() > timetofade) {
-		timetofade = micros() + (unsigned long)FADE_INTERVAL;
+      timetofade = micros() + (unsigned long)FADE_INTERVAL;
       if(LED_value[fade_LED] < LED_target[fade_LED]) LED_value[fade_LED]++;
       if(LED_value[fade_LED] > LED_target[fade_LED]) LED_value[fade_LED]--;
   }
@@ -174,17 +175,12 @@ void loop() {
 // Move the servo a step closer to its target angle if it's time
 //////////////////////////////////////////////////////////////////////////
   if (millis() > timetomoveservo) {
-		timetomoveservo = millis() + (unsigned long)SERVO_INTERVAL;
+    timetomoveservo = millis() + (unsigned long)SERVO_INTERVAL;
     if(servo_value < servo_target) servo_value++;
     if(servo_value > servo_target) servo_value--;
     servo.write(servo_value);
   }
 
-//////////////////////////////////////////////////////////////////////////
-// Write the PWM values to the LED outputs
-//////////////////////////////////////////////////////////////////////////
-  for (byte i=0; i<6; i++) analogWrite(LED_pin[i],LED_value[i]);
-  
 //////////////////////////////////////////////////////////////////////////
 // Read the analog input
 //////////////////////////////////////////////////////////////////////////
@@ -198,8 +194,15 @@ void loop() {
   if(enc_value > 255) enc_value = 255;
   if(enc_value <   0) enc_value =   0;
   if(enc_value != enc_value_old) {
+    LED_value(encoder_LED) = enc_value;
     Serial.println(enc_value);
     enc_value_old = enc_value;
   }
+
+//////////////////////////////////////////////////////////////////////////
+// Write the PWM values to the LED outputs
+//////////////////////////////////////////////////////////////////////////
+  for (byte i=0; i<6; i++) analogWrite(LED_pin[i],LED_value[i]);
+  
 
 } // end loop
