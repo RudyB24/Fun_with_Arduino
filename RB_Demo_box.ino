@@ -32,7 +32,7 @@ byte blink_LED = 0; // number of the LED used for blinking (0-5)
 byte fade_LED  = 1; // number of the LED used for fade (0-5)
 
 //////////////////////////////////////////////////////////////////////////
-// End of pins & variables configuration
+// End of configuration
 //////////////////////////////////////////////////////////////////////////
 
 const int numSW  = sizeof(SW_pin);
