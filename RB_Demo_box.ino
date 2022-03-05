@@ -23,10 +23,10 @@
 #define NUMSW            2 // Number of SWitches to read out
 #define NUMPB            2 // Number of pushbuttons to read out
 
-#define ENCA_pin  14 // A0 Encoder A or Data
-#define ENCB_pin  15 // A1 Encoder B or Clock
-#define POTM_pin  17 // A3 Potentiometer Analog In
-#define SERVO_pin 18 // A4 Servo
+#define ENCA_pin        14 // A0 Encoder A or Data
+#define ENCB_pin        15 // A1 Encoder B or Clock
+#define POTM_pin        17 // A3 Potentiometer Analog In
+#define SERVO_pin       18 // A4 Servo
 
 byte SW_pin[]  = {7,8};    // pin numbers of the switches (AND IN FUTURE: encoder)
 byte PB_pin[]  = {2,4,16}; // pin numbers of the pushbuttons, 16 is encoder-SW
