@@ -129,8 +129,8 @@ void loop() {
 //////////////////////////////////////////////////////////////////////////
 // Example of state transition diagram, st<100: state, st>100: transition
 //////////////////////////////////////////////////////////////////////////
-	switch(st) {
-		case 1: // read pushbuttons (pb) and switches (sw)
+  switch(st) {
+    case 1: // read pushbuttons (pb) and switches (sw)
       if(pb[0]==1) st = 101;  
       if(pb[0]==2) st = 102;
       if(pb[1]==1) dig_value[1] = 1;
@@ -144,14 +144,14 @@ void loop() {
       if(sw[1]==1) blinking = 1;
       else         blinking = 0;
     break;
-		case 101:
+    case 101:
       if(servo_target==SERVO_MIN) servo_target = SERVO_MAX;
       else                        servo_target = SERVO_MIN;
       Serial.print("Servo target = ");
       Serial.println(servo_target);
       st = 1;
     break;
-		case 102:
+    case 102:
       servo_target = 90;
       Serial.print("Servo target = ");
       Serial.println(servo_target);
@@ -197,7 +197,7 @@ void loop() {
   }
 
 //////////////////////////////////////////////////////////////////////////
-// Read the analog input
+// Read the analog input and change LED_POTMETER brightness accordingly
 //////////////////////////////////////////////////////////////////////////
   analog_reading = analogRead(POTM_PIN);
   pwm_value[LED_POTMETER] = analog_reading / 4;
