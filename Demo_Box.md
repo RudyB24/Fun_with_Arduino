@@ -12,9 +12,9 @@ The purpose is to be able to easily try out all kinds of code ideas we may have 
 
 The Demo_Box.ino file contains examples of code snippets that are common in many applications.
 
-**Read toggle switch inputs.**
-They are read every loop() cycle and stored in the sw[i] array. Also a state change of the switches, from 0 -> 1 or from 1 -> 0, is stored in the sw_state[i] array for the duration of one cycle. This can be used to do something just once, only when the switch state has changed.
+**Read toggle switch inputs.**  
+They are read every loop() cycle and stored in the sw[i] array. Also a state change of the switches, from 0 -> 1 or from 1 -> 0, is stored in the sw_change[i] array for the duration of one cycle. This can be used to do something only once, if the switch state has changed.
 
-**Debounce an input.**
+**Debounce an input.**  
 The toggle switches are debounced, they only schange state after a DEBOUNCE time in ms.
 
