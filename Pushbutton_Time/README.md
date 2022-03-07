@@ -1,4 +1,4 @@
-**Read pushbuttons inputs**
+**Read pushbutton inputs**
 
 The pin numbers of the pushbutton inputs are configured in the pb_pin[i] array.
 
