@@ -33,7 +33,10 @@ void loop() {
       sw_change[i] = reading;
     }
   } // End for
-  
+
+//////////////////////////////////////////////////////////////////////////
+// Do something when a switch state changed
+//////////////////////////////////////////////////////////////////////////  
   if(sw_change[0]==0) Serial.println("SW0 = 0");
   if(sw_change[0]==1) Serial.println("SW0 = 1");
   if(sw_change[1]==0) Serial.println("SW1 = 0");
