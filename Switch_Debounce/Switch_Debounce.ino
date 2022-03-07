@@ -1,7 +1,7 @@
 // Ruud Boer, March 2022
 // Reads the state if switch inputs every loop() cycle and stores the values in the
 // sw[i] array, but only if the state was stable for at least DEBOUNCE ms.
-// A state change is stored in the array sw-change[i], but only for the duration of
+// A state change is stored in the array sw-change[i], for the duration of
 // one cycle. This can be used to do things only once after a switch changed state.
 
 #define DEBOUNCE 1000 // [ms]
