@@ -6,7 +6,7 @@ The Demo Box contains:
 - 6 LEDs
 - 1 servo
 
-With almost always every code idea we want to try out some sort of physical inputs and some visible outputs are required. The purpose of this 'Demo Box' is to have these readily available for quick and easy use.
+With almost always every code idea we want to try some physical inputs and visible outputs are required. The purpose of this 'Demo Box' is to have these readily available for quick and easy use.
 
 The Demo_Box.ino file contains examples of code snippets that are common in many applications.
 
