@@ -22,8 +22,8 @@ The pin numbers of the pushbutton inputs are configured in the pb_pin[i] array. 
 - 1 if pressed longer than SHORT_PRESS ms
 - 0 if pressed shorter than SHORT_PRESS ms, which automatically functions as debounce
 
-**Read digital encoder**
-The encoder is read in a function that returns:
+**Read digital encoder**  
+The digital encoder is read in a function that returns:
 - 10 if rotation was faster than ENC_SLOW_FAST ms
 - 1 if rotation was slower than ENC_SLOW_FAST ms
 - 0 if pulses were shorter than ENC_DEBOUNCE ms
