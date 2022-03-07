@@ -7,7 +7,8 @@ byte sw_pin[]  = {7,8};      // Pin numbers of the switches. Table can have any 
 //////////////////////////////////////////////////////////////////////////
 
 const int numsw  = sizeof(sw_pin);
-byte sw[numsw], sw_old[numsw], sw_change[numsw]; // switches, sw_change: H>L=0 L>H=1 none=2
+byte sw[numsw], sw_change[numsw]; // switches, sw_change: H>L=0 L>H=1 none=2
+unsigned long sw_time[numsw];
 
 void setup() {
   for (byte i=0; i<numsw; i++)  pinMode(sw_pin[i],INPUT_PULLUP);
@@ -33,9 +34,9 @@ void loop() {
     }
   } // end for
   
-  if(sw_change[0]==0) Serial.println("Sw0 = 0");
-  if(sw_change[0]==1) Serial.println("Sw0 = 1");
-  if(sw_change[1]==0) Serial.println("Sw1 = 0");
-  if(sw_change[1]==1) Serial.println("Sw1 = 1");
+  if(sw_change[0]==0) Serial.println("SW0 = 0");
+  if(sw_change[0]==1) Serial.println("SW0 = 1");
+  if(sw_change[1]==0) Serial.println("SW1 = 0");
+  if(sw_change[1]==1) Serial.println("SW1 = 1");
   
 } // End loop()
