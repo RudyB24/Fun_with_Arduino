@@ -1,6 +1,6 @@
 #define DEBOUNCE 1000 // [ms]
 
-byte sw_pin[] = {7,8};      // Pin numbers of the switches. Table can have any length.
+byte sw_pin[] = {7,8}; // Pin numbers of the switches. Table can have any length.
 
 //////////////////////////////////////////////////////////////////////////
 // End of configuration
@@ -32,7 +32,7 @@ void loop() {
       sw[i]        = reading;
       sw_change[i] = reading;
     }
-  } // end for
+  } // End for
   
   if(sw_change[0]==0) Serial.println("SW0 = 0");
   if(sw_change[0]==1) Serial.println("SW0 = 1");
