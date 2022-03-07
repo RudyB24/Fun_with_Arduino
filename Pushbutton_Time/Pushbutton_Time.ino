@@ -1,5 +1,5 @@
   // Ruud Boer, March 2022
-// Pushbuttons are read in a function that returns:
+// Pushbuttons are read via a function that returns:
 // - 2 if pressed longer than LONG_PRESS
 // - 1 if pressed longer than SHORT_PRESS
 // - 0 if pressed shorter than SHORT_PRESS, this also functions as a debounce
@@ -44,10 +44,10 @@ byte read_pb(byte i) {
 
 void loop() {
 //////////////////////////////////////////////////////////////////////////
-// Read if pushbuttons are pressed short or long
+// Read the pushbuttons and do something based on long or short press
 //////////////////////////////////////////////////////////////////////////
   for (byte i=0; i<numpb; i++) pb[i] = read_pb(i);
-  if(pb[0]==1) Serial.println("PB0 short");  
+  if(pb[0]==1) Serial.println("PB0 short"); 
   if(pb[0]==2) Serial.println("PB0 long");
   if(pb[1]==1) Serial.println("PB1 short");
   if(pb[1]==2) Serial.println("PB1 long");
