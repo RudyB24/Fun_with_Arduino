@@ -7,7 +7,7 @@
 #define SHORT_PRESS  100 // [ms]
 #define LONG_PRESS  2000 // [ms]
 
-byte pb_pin[] = {2,4};  // Pin numbers of the pushbuttons. Table can have any length. 
+byte pb_pin[] = {2,4}; // Pin numbers of the pushbuttons. Table can have any length. 
 
 //////////////////////////////////////////////////////////////////////////
 // End of configuration
