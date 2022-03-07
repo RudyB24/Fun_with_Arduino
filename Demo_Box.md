@@ -6,12 +6,11 @@ The Demo Box contains:
 - 6 LEDs
 - 1 servo
 
-The purpose is to be able to easily try out all kinds of code ideas we may have ... almost always some physical inputs and visible outputs are required, the Demo Box delivers these quick and easy, readily available.
+With almost always every code idea we want to try out some sort of physical inputs and some visible outputs are required. The purpose of this 'Demo Box' is to have these readily available for quick and easy use.
 
 The Demo_Box.ino file contains examples of code snippets that are common in many applications.
 
-**BEWARE:   
-If servo.h is included, then analogWrite() does not work for pins 9,10 !**
+**BEWARE: If servo.h is included, then analogWrite() does not work for pins 9,10 !**
 
 **Read toggle switch inputs.**  
 The pin numbers of the switch inputs are configured in the sw_pin[i] array. They are read every loop() cycle. The values are stored in the sw[i] array. The toggle switches are debounced, they only schange state if their state is stable longer than DEBOUNCE ms. A state change of the switches, from 0 -> 1 or from 1 -> 0, is stored in the sw_change[i] array for the duration of one cycle. This can be used to do something only once after the switch state has changed.
