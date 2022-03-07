@@ -11,18 +11,21 @@ The purpose is to be able to easily try out all kinds of code ideas we may have 
 The Demo_Box.ino file contains examples of code snippets that are common in many applications.
 
 **BEWARE:   
-If servo.h is included, then analogWrite() does not work anymore for pins 9,10 !**
+If servo.h is included, then analogWrite() does not work for pins 9,10 !**
 
 **Read toggle switch inputs.**  
-They are read every loop() cycle and stored in the sw[i] array. Also a state change of the switches, from 0 -> 1 or from 1 -> 0, is stored in the sw_change[i] array for the duration of one cycle. This can be used to do something only once, if the switch state has changed.  
-The pin numbers of the switch inputs are configured in the sw_pin[] array.
-
-**Debounce an input.**  
-The toggle switches are debounced, they only schange state after a DEBOUNCE time in ms.
+The pin numbers of the switch inputs are configured in the sw_pin[i] array. They are read every loop() cycle. The values are stored in the sw[i] array. The toggle switches are debounced, they only schange state if their state is stable longer than DEBOUNCE ms. A state change of the switches, from 0 -> 1 or from 1 -> 0, is stored in the sw_change[i] array for the duration of one cycle. This can be used to do something only once after the switch state has changed.
 
 **Read pushbuttons inputs**  
-The pushbuttons are read in a function that returns:
-- 2 if pressed longer than LONG_PRESS
-- 1 if pressed longer than SHORT_PRESS
-- 0 if pressed shorter than SHORT_PRESS, which automatically functions as debounce  
-The pin numbers of the switch inputs are configured in the sw_pin[] array.
+The pin numbers of the pushbutton inputs are configured in the pb_pin[i] array. The values are stored in the pb[i] array. The pushbuttons are read in a function that returns:
+- 2 if pressed longer than LONG_PRESS ms
+- 1 if pressed longer than SHORT_PRESS ms
+- 0 if pressed shorter than SHORT_PRESS ms, which automatically functions as debounce
+
+**Read digital encoder**
+The encoder is read in a function that returns:
+- 10 if rotation was faster than ENC_SLOW_FAST ms
+- 1 if rotation was slower than ENC_SLOW_FAST ms
+- 0 if pulses were shorter than ENC_DEBOUNCE ms
+
+
