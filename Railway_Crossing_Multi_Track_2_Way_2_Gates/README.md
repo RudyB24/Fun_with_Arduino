@@ -10,4 +10,6 @@ Per track two sensors are used to detect an arriving train and a departing train
 
 Internally a counter is used that counts up with every arrival of a train and counts down with every departure. This assures the gates stay closed, or re-close while they were already opening, when trains on different tracks are detected via the arrival sensors.
 
+[More info over here.](https://rudysarduinoprojects.wordpress.com/2020/09/23/fun-with-arduino-42-railway-crossing-multi-track-two-way/)
+
 -- 0 --
