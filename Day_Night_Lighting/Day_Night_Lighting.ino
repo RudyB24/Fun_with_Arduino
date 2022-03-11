@@ -1,12 +1,7 @@
 // Ruud Boer - March 2022
 
-// Light presets, defined by RGBW values in the table below:
-// 0 Work light
-// 1 Day
-// 2 Evening
-// 3 Night
-// 4 Morning
-//                        RRR,GGG,BBB,WWW       light_state
+// Light presets RGBW values
+//                        RRR,GGG,BBB,WWW    // state
 byte light_state[5][4] ={{255,255,255,255},  // 0 Work light
                          {255,  0,  0,  0},  // 1 Day
                          {  0,255,  0,  0},  // 2 Evening
@@ -14,10 +9,10 @@ byte light_state[5][4] ={{255,255,255,255},  // 0 Work light
                          {  0,  0,  0,255}}; // 4 Morning
 
 int fade_interval = 10; // [ms] the higher the number, the slower the fade. Value 10 equals 2,5 sec.
-unsigned int light_state_time[] = {10,4,10,4}; // [s] day, evening, night, morning 
+unsigned int light_state_time[] = {10,4,10,4}; // [s] time to stay in day, evening, night, morning states
 
-byte state_input[]   = {2,3,4,5,7,8}; // LOW is active. [0]-[4] switch to one of the 5 states, [5] switches the sequencer
-byte LED_output[] = {6,9,10,11};   // Note: these must be PWM outputs
+byte state_input[] = {2,3,4,5,7,8}; // LOW is active. [0]-[4] switch to one of the 5 states, [5] switches the sequencer
+byte LED_output[]  = {6,9,10,11};   // Note: these must be PWM outputs
 
 //--------------------------------------------------------------------------------------------------
 // No need to change anyting below
