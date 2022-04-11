@@ -47,10 +47,10 @@ void loop() {
 // Read the pushbuttons and do something based on long or short press
 //////////////////////////////////////////////////////////////////////////
   for (byte i=0; i<numpb; i++) byte pressed = read_pb(i);
-  if(pressed!=0) {
+  if(pressed!=0) { // button has been pressed long enough to be detected
     Serial.print("PB ");
     Serial.print(i);
-    if (pressed==1) Serial.print(" short");
-    else            Serial.print(" long");
+    if (pressed==1) Serial.println(" short");
+    else            Serial.println(" long");
   }
 } // End loop
