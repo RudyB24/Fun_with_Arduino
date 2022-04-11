@@ -75,6 +75,6 @@ void loop() {
       if (servo[i].angle < servo[i].setpoint) servo[i].angle++;
       if (servo[i].angle > servo[i].setpoint) servo[i].angle--;
       servo[i].servo.write(servo[i].angle);
-    }
-  }
-}
+    } // end for
+  }   // end if
+}     // end loop
