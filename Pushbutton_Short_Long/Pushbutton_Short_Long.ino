@@ -13,9 +13,9 @@ byte pb_pin[] = {2,4}; // Pin numbers of the pushbuttons. Table can have any len
 // End of configuration
 //////////////////////////////////////////////////////////////////////////
 
-const int numpb  = sizeof(pb_pin);
-byte pb[numpb], pb_change[numpb]; // PB_change 0:H>L 1:L>H 2:none
-unsigned long pb_time[numpb];     // pushbutton timers
+const int numpb = sizeof(pb_pin);
+byte pb[numpb];               // pushbutton state
+unsigned long pb_time[numpb]; // pushbutton timers
 
 void setup() {
   for (byte i=0; i<numpb; i++)  pinMode(pb_pin[i],INPUT_PULLUP);
