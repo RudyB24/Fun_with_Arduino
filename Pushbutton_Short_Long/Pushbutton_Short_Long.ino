@@ -1,8 +1,8 @@
 // Ruud Boer, March 2022
 // Pushbuttons are read via a function that returns:
-// - 2 if pressed longer than LONG_PRESS
-// - 1 if pressed longer than SHORT_PRESS
-// - 0 if pressed shorter than SHORT_PRESS, this also functions as a debounce
+// 2 if pressed longer than LONG_PRESS
+// 1 if pressed longer than SHORT_PRESS
+// 0 if pressed shorter than SHORT_PRESS, this also functions as a debounce
 
 #define SHORT_PRESS  100 // [ms]
 #define LONG_PRESS  2000 // [ms]
