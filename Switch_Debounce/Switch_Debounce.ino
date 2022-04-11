@@ -13,7 +13,7 @@ byte sw_pin[] = {7,8}; // Pin numbers of the switches. Table can have any length
 //////////////////////////////////////////////////////////////////////////
 
 const int numsw  = sizeof(sw_pin);
-byte sw[numsw], sw_change[numsw]; // switches, sw_change: H>L=0 L>H=1 none=2
+byte sw[numsw], sw_change[numsw]; // sw_change: H>L=0 L>H=1 none=2
 unsigned long sw_time[numsw];
 
 void setup() {
@@ -30,13 +30,13 @@ void loop() {
 //////////////////////////////////////////////////////////////////////////
   for (byte i=0; i<numsw; i++) {
     byte reading = digitalRead(sw_pin[i]);
-    if(sw[i]==reading) {
+    if(reading==sw[i]) {
       sw_time[i] = millis();
-      sw_change[i] = 2; // 2 = no change
+      sw_change[i] = 2; // 2:no change
     }
     else if(millis() > sw_time[i] + (unsigned long)DEBOUNCE) {
       sw[i]        = reading;
-      sw_change[i] = reading;
+      sw_change[i] = reading; // H>L=0 L>H=1
     }
   } // End for
 
