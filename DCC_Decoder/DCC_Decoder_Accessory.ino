@@ -35,8 +35,8 @@ void setup() {
   accessory[0].address   =  1;              
   accessory[0].outputpin = 10;          
               
-  accessory[2].address   =  3;  
-  accessory[2].outputpin = 11;
+  accessory[1].address   =  3;  
+  accessory[1].outputpin = 11;
   // END OF CONFIGURATION OF ACCESSORIES
 
   DCC.SetBasicAccessoryDecoderPacketHandler(BasicAccDecoderPacket_Handler, true);
