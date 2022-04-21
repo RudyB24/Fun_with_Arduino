@@ -1,7 +1,16 @@
+Ruud Boer - April 2022
+
 This Arduino sketch controls 4 PWM outputs to which 4 LED strips, or an RGB plus a separate W strip, or one RGBW strip, can be connected via 4 FET modules.
 
-Five RGBW presets are defined inside the code. Five inputs are used to switch to any of these five presets.
+Five lightings states each have their own RGBW values:
+0 Day
+1 Evening
+2 Night
+3 Morning
+4 Work light
 
-The sketch also holds a sequencer via which a day / evening / night / morning cycle can be created, for instance for a model railroad layout. This sequencer is switched via a sixth input. The time for each phase as well as the time to fade between phases is defined in the code. 
+4 inputs (switches, not pushbutton, active when GND) are used to enable one of the states 0-3
+A 5th input switches a sequencer that steps from one state to the next via a gradual fade
+If no input is present the state is 4: Work Light
 
 -- 0 --
