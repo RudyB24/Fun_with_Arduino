@@ -1,13 +1,13 @@
 // Ruud Boer - April 2022
 // Control for RGBW LED lighting
-// Five lightings states each have their own RGBW values:
+// Five lighting states each have their own RGBW values:
 // 0 Day
 // 1 Evening
 // 2 Night
 // 3 Morning
 // 4 Work light
 
-// 4 inputs (switch. not pushbutton, active when GND) are used to enable one of the states 0-3
+// 4 inputs (switches, not pushbutton, active when GND) are used to enable one of the states 0-3
 // A 5th input switches a sequencer that steps from one state to the next via a gradual fade
 // If no input is present the state is 4: Work Light
 
