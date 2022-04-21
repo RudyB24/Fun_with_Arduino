@@ -1,4 +1,4 @@
- // Ruud Boer - April 2022
+// Ruud Boer - April 2022
 // Control for RGBW LED lighting
 // Five lightings states each have their own RGBW values:
 // 0 Day
