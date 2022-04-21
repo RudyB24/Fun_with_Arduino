@@ -1,4 +1,4 @@
-// Ruud Boer - April 2022
+ // Ruud Boer - April 2022
 // Control for RGBW LED lighting
 // Five lightings states each have their own RGBW values:
 // 0 Day
@@ -7,15 +7,15 @@
 // 3 Morning
 // 4 Work light
 
-// Inputs, active when GND, are used to switch to one of the 4 states
-// A fifth input switches a sequencer that fades from one state to the next
-// If no input is present the state is 4 Work Light
+// 4 inputs (switch. not pushbutton, active when GND) are used to enable one of the states 0-3
+// A 5th input switches a sequencer that steps from one state to the next via a gradual fade
+// If no input is present the state is 4: Work Light
 
 // Data to be filled in:
 //--------------------------------------------------------------------------------------------------
 #define FILTERTIME 500 // [ms] Switch inputs must be stable FILTERTIME ms before being accepted
 
-byte TC_input_pin[]   = {2,3,4,5,8}; // Inputs (permanent switches)
+byte TC_input_pin[]   = {2,3,4,5,8}; // Inputs (permanent switches, not pushbuttons)
 byte LED_output_pin[] = {6,9,10,11}; // Must be PWM outputs marked with ~
 
 //                        RRR,GGG,BBB,WWW       state
