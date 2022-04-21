@@ -1,6 +1,6 @@
 // Ruud Boer - April 2022
-// Control with on/off fade for RGBW LED lighting
-// Five user configurable states with their own RGBW values:
+// Control for RGBW LED lighting
+// Five lightings states each have their own RGBW values:
 // 0 Day
 // 1 Evening
 // 2 Night
@@ -8,8 +8,8 @@
 // 4 Work light
 
 // Inputs, active when GND, are used to switch to one of the 4 states
-// A fifth input switches a sequncer that steps through the states
-// If no input is present the state is 4: Work Light
+// A fifth input switches a sequencer that fades from one state to the next
+// If no input is present the state is 4 Work Light
 
 // Data to be filled in:
 //--------------------------------------------------------------------------------------------------
