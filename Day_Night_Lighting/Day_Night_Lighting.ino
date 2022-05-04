@@ -1,11 +1,15 @@
 // Ruud Boer - April 2022
-// Control with on/off fade for RGBW LED lighting
-// Five user configurable states with their own RGBW values:
-// 0 Day
-// 1 Evening
-// 2 Night
-// 3 Morning
-// 4 Work light
+// Switch RGBW LED lighting to one of 9 states, with a fade between states
+// States each with their own RGBW values:
+// 0 Day light room
+// 1 Evening light room
+// 2 Night light room
+// 3 Morning light room
+// 4 Day dark room
+// 5 Evening dark room
+// 6 Night dark room
+// 7 Morning dark room
+// 8 Work light
 
 // Inputs, active when GND, are used to switch to one of the 4 states
 // A fifth input switches a sequncer that steps through the states
@@ -24,7 +28,7 @@ byte TC_input_pin[]   = {2,3,4,5,7,8,12}; // Inputs (permanent switches)
 // 3 = pin  5 = Morning
 // 4 = pin  7 = Sequencer
 // 5 = pin  8 = Work Light
-// 6 = pin 12 = Change Setpoints voor lichte / donkere kamer
+// 6 = pin 12 = Change between setpoints for light or dark room
 
 byte LED_output_pin[] = {6,9,10,11};   // Must be PWM outputs marked with ~
 
