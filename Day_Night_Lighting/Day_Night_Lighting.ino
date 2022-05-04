@@ -1,54 +1,73 @@
 // Ruud Boer - April 2022
-// Control for RGBW LED lighting
-// Five lighting states each have their own RGBW values:
+// Control with on/off fade for RGBW LED lighting
+// Five user configurable states with their own RGBW values:
 // 0 Day
 // 1 Evening
 // 2 Night
 // 3 Morning
 // 4 Work light
 
-// 4 inputs (switches, not pushbutton, active when GND) are used to enable one of the states 0-3
-// A 5th input switches a sequencer that steps from one state to the next via a gradual fade
+// Inputs, active when GND, are used to switch to one of the 4 states
+// A fifth input switches a sequncer that steps through the states
 // If no input is present the state is 4: Work Light
 
+//--------------------------------------------------------------------------------------------------
 // Data to be filled in:
 //--------------------------------------------------------------------------------------------------
+
 #define FILTERTIME 500 // [ms] Switch inputs must be stable FILTERTIME ms before being accepted
 
-byte TC_input_pin[]   = {2,3,4,5,8}; // Inputs (permanent switches, not pushbuttons)
-byte LED_output_pin[] = {6,9,10,11}; // Must be PWM outputs marked with ~
+byte TC_input_pin[]   = {2,3,4,5,7,8,12}; // Inputs (permanent switches)
+// 0 = pin  2 = Day
+// 1 = pin  3 = Evening
+// 2 = pin  4 = Night
+// 3 = pin  5 = Morning
+// 4 = pin  7 = Sequencer
+// 5 = pin  8 = Work Light
+// 6 = pin 12 = Change Setpoints voor lichte / donkere kamer
+
+byte LED_output_pin[] = {6,9,10,11};   // Must be PWM outputs marked with ~
 
 //                        RRR,GGG,BBB,WWW       state
-byte light_state[5][4] ={{  0,  0,  0,255},  // 0 Day
-                         {255,  0,  0,  0},  // 1 Evening
-                         {  0,255,  0,  0},  // 2 Night
-                         {  0,  0,255,  0},  // 3 Morning
-                         {255,255,255,255}}; // 4 Work Light
+byte light_state[9][4] ={{  0,  0,  0,255},  // 0 Day     light room
+                         {255,  0,  0,  0},  // 1 Evening light room
+                         {  0,255,  0,  0},  // 2 Night   light room
+                         {  0,  0,255,  0},  // 3 Morning light room
+                         {  0,  0,  0, 50},  // 4 Day     dark room
+                         { 50,  0,  0,  0},  // 5 Evening dark room
+                         {  0, 50,  0,  0},  // 6 Night   dark room
+                         {  0,  0, 50,  0},  // 7 Morning dark room
+                         {255,255,255,255}}; // 8 Work Light
 
 int sequencer_time[]   = {9,9,9,9}; // [s] day, evening, night, morning
 int fade_interval      = 20; // [ms] Higher number = slower fade, 10 equals 2.5 s
 int fade_interval_wl   = 10; // [ms] Separate (faster) fade time for Work Light
+
+//--------------------------------------------------------------------------------------------------
+// End of configuration. Don't change anything below this line
 //--------------------------------------------------------------------------------------------------
 
+const int numinputs = sizeof(TC_input_pin); // How many inputs are in use with this Arduino
 byte i, state, state_old, sequencer, R,G,B,W, Rtarget, Gtarget, Btarget, Wtarget;
-byte sw[5];
-unsigned long time_to_change_state, time_for_fade_step, sw_time[5];
+byte sw[numinputs];
+unsigned long time_to_change_state, time_for_fade_step, sw_time[numinputs];
 
 void setup() {
   pinMode(13, OUTPUT);
   digitalWrite(13, 0);
-  for (i = 0; i < 5; i++) {
+  for (i = 0; i < numinputs; i++) {
     pinMode(TC_input_pin[i], INPUT_PULLUP);
     sw[i] = 1;
   } 
-  state = 4; // Start with Work Light
+  state = 8; // Start with Work Light
   Serial.begin(9600);
+  Serial.println(numinputs);
   Serial.println("Ready");
 }
 
 void loop() {
   
-  for (byte i=0; i<5; i++) { // Read the switches with anti interference FILTERTIME
+  for (byte i=0; i<numinputs; i++) { // Read the switches with anti interference FILTERTIME
     byte reading = digitalRead(TC_input_pin[i]);
     if(reading==sw[i]) {
       sw_time[i] = millis();
@@ -62,10 +81,15 @@ void loop() {
     sequencer = 1; // Sequencer enabled
     digitalWrite(13, 1);
   }
+  else if(!sw[5]) {
+    sequencer = 0;
+    digitalWrite(13, 0);
+    state = 8;
+  }
   else {
     sequencer = 0; // Sequencer stopped
     digitalWrite(13, 0);
-    state = 4;     // Work Light if no switch is active
+    state = 8;     // Work Light if no switch is active
     for (i = 0; i < 4; i++) { // Check switch inputs 0-3
       if(!sw[i]) state = i;
     }
@@ -78,18 +102,20 @@ void loop() {
       time_to_change_state = millis() + sequencer_time[state] * 1000UL;
     }
   }
-
+  
+  if(state!=8 && !sw[6]) state = state + 4; // Set state to 4-7 for dark room setpoints
   if(state != state_old) {
+    state_old = state; 
     Serial.println(state);
-    state_old = state;
     Rtarget = light_state[state][0];
     Gtarget = light_state[state][1];
     Btarget = light_state[state][2];
     Wtarget = light_state[state][3];
   }
+  if(state!=8 && !sw[6]) state = state - 4; // Set state back to 0-3
 
   if(millis() > time_for_fade_step) {
-    if(state==4) time_for_fade_step = millis() + (unsigned long)fade_interval_wl;
+    if(state==8) time_for_fade_step = millis() + (unsigned long)fade_interval_wl;
     else         time_for_fade_step = millis() + (unsigned long)fade_interval;
     if(R<Rtarget) R++; if(R>Rtarget) R--;
     if(G<Gtarget) G++; if(G>Gtarget) G--;
