@@ -11,17 +11,13 @@
 // 7 Morning dark room
 // 8 Work light
 
-// Inputs, active when GND, are used to switch to one of the 4 states
-// A fifth input switches a sequncer that steps through the states
-// If no input is present the state is 4: Work Light
-
 //--------------------------------------------------------------------------------------------------
 // Data to be filled in:
 //--------------------------------------------------------------------------------------------------
 
 #define FILTERTIME 500 // [ms] Switch inputs must be stable FILTERTIME ms before being accepted
 
-byte TC_input_pin[]   = {2,3,4,5,7,8,12}; // Inputs (permanent switches)
+byte TC_input_pin[]   = {2,3,4,5,7,8,12}; // Inputs (permanent switches), active 0, LOW, GND.
 // 0 = pin  2 = Day
 // 1 = pin  3 = Evening
 // 2 = pin  4 = Night
