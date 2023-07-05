@@ -4,10 +4,12 @@
 // - 1 if the pulses came slower than ENCODER_SLOW_FAST ms
 // - 0 if the pulses came faster than ENC_DEBOUNCE ms
 
-#define ENCA_PIN        14 // A0 Encoder A or Data
-#define ENCB_PIN        15 // A1 Encoder B or Clock
-#define ENC_DEBOUNCE    10 // [ms] rotary debounce time
-#define ENC_SLOW_FAST  200 // [ms] rotary slow / fast rotation limit
+#define ENCA_PIN      14 // A0 pin Encoder A or Data
+#define ENCB_PIN      15 // A1 pin Encoder B or Clock
+#define SLOW_INC       1 // Increment Value when slow rotation is detected
+#define FAST_INC      10 // Increment Value when fast rotation is detected
+#define ENC_DEBOUNCE  10 // [ms] rotary debounce time
+#define ENC_FAST     200 // [ms] rotary slow / fast rotation limit
 
 byte encA, encA_old, encB;
 int enc_value, enc_value_old;
@@ -21,16 +23,16 @@ void setup() {
   Serial.println("Started");
 } // End setup()
 
-//////////////////////////////////////////////////////////////////////////
-// Function: determine encoder slow or fast rotation
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+// Function: detect encoder slow/fast rotation and return a value accordingly
+/////////////////////////////////////////////////////////////////////////////////
 int read_encoder() {
   int increment;
   encA = digitalRead(ENCA_PIN);
   if((encA_old == 0) && (encA == 1)) { // 0 > 1 transition
-    if     ((millis() - enc_rot_time) > ENC_SLOW_FAST) increment =  1;
-    else if((millis() - enc_rot_time) > ENC_DEBOUNCE)  increment = 10;
-    else                                               increment =  0;
+    if     ((millis() - enc_rot_time) > ENC_FAST)     increment = SLOW_INC;
+    else if((millis() - enc_rot_time) > ENC_DEBOUNCE) increment = FAST_INC;
+    else                                              increment = 0;
     enc_rot_time = millis();
     encA_old = encA;
     if(digitalRead(ENCB_PIN) == 1) return  increment;
@@ -41,9 +43,9 @@ int read_encoder() {
 }
 
 void loop() {
-//////////////////////////////////////////////////////////////////////////
-// Read the digital encoder and change LED_ENCODER brightness accordingly
-//////////////////////////////////////////////////////////////////////////  
+///////////////////////////////////////////////////////////////////////////
+// Read the digital encoder and change enc_value accordingly between 0~255
+///////////////////////////////////////////////////////////////////////////
   enc_value = enc_value + read_encoder();
   if(enc_value > 255) enc_value = 255;
   if(enc_value <   0) enc_value =   0;
