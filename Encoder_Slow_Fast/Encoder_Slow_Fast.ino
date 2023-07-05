@@ -6,7 +6,7 @@
 
 #define ENCA_PIN        14 // A0 Encoder A or Data
 #define ENCB_PIN        15 // A1 Encoder B or Clock
-#define ENC_DEBOUNCE    10 // [ms] rotary debounce
+#define ENC_DEBOUNCE    10 // [ms] rotary debounce time
 #define ENC_SLOW_FAST  200 // [ms] rotary slow / fast rotation limit
 
 byte encA, encA_old, encB;
