@@ -7,32 +7,31 @@
 #define SHORT_PRESS  100 // [ms]
 #define LONG_PRESS  2000 // [ms]
 
-byte pb_pin[] = {2,4}; // Pin numbers of the pushbuttons. Table can have any length. 
+byte pb_pin[] = {4,5}; // Pin numbers of the pushbuttons
 
 //////////////////////////////////////////////////////////////////////////
 // End of configuration
 //////////////////////////////////////////////////////////////////////////
 
 const int numpb = sizeof(pb_pin);
-byte pb[numpb];               // pushbutton state
-unsigned long pb_time[numpb]; // pushbutton timers
+byte pbstate[numpb], pressed;
+unsigned long pb_time[numpb];
 
 void setup() {
   for (byte i=0; i<numpb; i++)  pinMode(pb_pin[i],INPUT_PULLUP);
   Serial.begin(9600);
-  Serial.println();
   Serial.println("Started");
-} // End setup()
+}
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 // Function: detect pushbuttons state change and return pushed time 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 byte read_pb(byte i) {
-  byte reading = digitalRead(pb_pin[i]); // read the push button
-  if(reading != pb[i]) {                 // state has changed
-    pb[i] = reading;
-    if(pb[i]==0) pb_time[i] = millis();  // 1 > 0 transition, start timer
-    else {                               // 0 > 1 transition, return push time
+  byte reading = digitalRead(pb_pin[i]);   // read the push button
+  if(reading != pbstate[i]) {              // state has changed
+    pbstate[i] = reading;
+    if(!pbstate[i]) pb_time[i] = millis(); // HL transition, start timer
+    else {                                 // LH transition, return push time
       int time_pushed = millis() - pb_time[i];
       if     (time_pushed > (int)LONG_PRESS)  return 2;
       else if(time_pushed > (int)SHORT_PRESS) return 1;
@@ -46,11 +45,13 @@ void loop() {
 //////////////////////////////////////////////////////////////////////////
 // Read the pushbuttons and do something based on long or short press
 //////////////////////////////////////////////////////////////////////////
-  for (byte i=0; i<numpb; i++) byte pressed = read_pb(i);
-  if(pressed!=0) { // button has been pressed long enough to be detected
-    Serial.print("PB ");
-    Serial.print(i);
-    if (pressed==1) Serial.println(" short");
-    else            Serial.println(" long");
+  for (byte i=0; i<numpb; i++) {
+    pressed = read_pb(i); //0=not pressed, 1=short, 2=long
+    if(pressed) { // Button has been pressed longer than SHORT_PRESS [ms]
+      Serial.print("PB");
+      Serial.print(i);
+      if (pressed==1) Serial.println(" short");
+      else            Serial.println(" long");
+    }
   }
-} // End loop
+}
