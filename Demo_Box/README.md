@@ -6,15 +6,15 @@ The Demo Box contains:
 - 6 LEDs
 - 1 servo
 
-// The pin numbers are for the demo box with the flatcable in the aluminium case
-#define SERVO_PIN  12 
-#define ENCA_PIN   14 // A0 Encoder A or Data
-#define ENCB_PIN   15 // A1 Encoder B or Clock
-#define POTM_PIN   17 // A3 Potentiometer Analog In
-byte swpin[]     = {8,9};      // SW0, SW1 input pins
-byte pbpin[]     = {10,11,16}; // PB0, PB1, encoder input pins
-byte digledpin[] = {2,4,7,13}; // digital LED outputs pins, 13 is PCB LED
-byte pwmledpin[] = {3,5,6};    // pwm LED output pins NOTE: marked ~ , don't use pins 9,10 with servo.h
+The pin numbers are for the demo box with the flatcable in the aluminium case
+- #define SERVO_PIN  12 
+- #define ENCA_PIN   14 // A0 Encoder A or Data
+- #define ENCB_PIN   15 // A1 Encoder B or Clock
+- #define POTM_PIN   17 // A3 Potentiometer Analog In
+- byte swpin[]     = {8,9};      // SW0, SW1 input pins
+- byte pbpin[]     = {10,11,16}; // PB0, PB1, encoder input pins
+- byte digledpin[] = {2,4,7,13}; // digital LED outputs pins, 13 is PCB LED
+- byte pwmledpin[] = {3,5,6};    // pwm LED output pins NOTE: marked ~ , don't use pins 9,10 with servo.h
 
 With almost always every code idea we want to try some physical inputs and visible outputs are required. The purpose of this 'Demo Box' is to have these readily available for quick and easy use.
 
