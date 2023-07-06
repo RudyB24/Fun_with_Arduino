@@ -18,7 +18,7 @@ byte pbstate[numpb];
 unsigned long pbtime[numpb];
 
 void setup() {
-  for (byte i=0; i<numpb; i++)  pinMode(pbpin[i], INPUT_PULLUP);
+  for (byte i=0; i<numpb; i++) pinMode(pbpin[i], INPUT_PULLUP);
   Serial.begin(9600);
   Serial.println("Started");
 }
