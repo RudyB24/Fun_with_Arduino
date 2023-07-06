@@ -83,8 +83,8 @@ void read_sw() {
       swchange[i] = 2; // 2=no change
     }
     else if(millis() > swtime[i] + (unsigned long)DEBOUNCE) {
-      sw[i]        = reading; // store the current state 0 or 1
-      swchange[i]  = reading; // is either 0 or 1 after a change, is 2 after no change
+      sw[i]        = reading; // store the current state, 0 or 1
+      swchange[i]  = reading; // is 0=HL or 1=LH after a change for one loop cycle, is 2 when no change
     }
   }
 }
@@ -100,8 +100,8 @@ void read_pb() {
       if(pbstate[i]==0) pbtime[i] = millis(); // HL transition, start timer
       else {                                  // LH transition, store push time
         int timepushed = millis() - pbtime[i];
-        if     (timepushed > (int)LONG_PRESS)  pb[i] = 1;
-        else if(timepushed > (int)SHORT_PRESS) pb[i] = 0;
+        if     (timepushed > (int)LONG_PRESS)  pb[i] = 1; // value is only here for one loop cycle
+        else if(timepushed > (int)SHORT_PRESS) pb[i] = 0; // value is only here for one loop cycle
         else                                   pb[i] = 2; // not pushed
       }
     }
