@@ -23,13 +23,14 @@ The Demo_Box.ino file contains examples of code snippets that are common in many
 **BEWARE: If servo.h is included, then analogWrite() does not work for pins 9,10 !**
 
 **Read toggle switch inputs.**  
-The pin numbers of the switch inputs are configured in the sw_pin[i] array. They are read every loop() cycle. The values are stored in the sw[i] array. The toggle switches are debounced, they only schange state if their state is stable longer than DEBOUNCE ms. A state change of the switches, from 0 -> 1 or from 1 -> 0, is stored in the sw_change[i] array for the duration of one cycle. This can be used to do something only once after the switch state has changed.
+- The pin numbers of the switch inputs are configured in the sw_pin[i] array.
+- The toggle switches are debounced, they only schange state if their state is stable longer than DEBOUNCE ms.
+- The state, 1=H, 0=L, is stored in the sw[i] array. 
+- A state change, 1=LH or 0=HL, is stored in the sw_change[i] array for the duration of just one loop cycle. This can be used to do something only once after the switch state has changed.
 
 **Read pushbuttons inputs**  
-The pin numbers of the pushbutton inputs are configured in the pb_pin[i] array. The values are stored in the pb[i] array. The pushbuttons are read in a function that returns:
-- 2 if pressed longer than LONG_PRESS ms
-- 1 if pressed longer than SHORT_PRESS ms
-- 0 if pressed shorter than SHORT_PRESS ms, which automatically functions as debounce
+- The pin numbers of the pushbutton inputs are configured in the pb_pin[i] array.
+- Presses are stored in the pb[i] array, for only one loop cycle: 0=short, 1=long, 2=no press
 
 **Read digital encoder**  
 The digital encoder is read in a function that returns:
