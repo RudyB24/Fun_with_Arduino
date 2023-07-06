@@ -14,7 +14,7 @@ byte pbpin[] = {10,11}; // Pin numbers of the pushbuttons
 ////////////////////////
 
 const int numpb = sizeof(pbpin);
-byte pbstate[numpb];
+byte pb[numpb], pbstate[numpb];
 unsigned long pbtime[numpb];
 
 void setup() {
@@ -26,19 +26,21 @@ void setup() {
 ///////////////////////////////////////////////////////////////////////////////////
 // Function: detect pushbuttons state change and store 0=short, 1=long, 2=no press 
 ///////////////////////////////////////////////////////////////////////////////////
-byte read_pb(byte i) {
-  byte reading = digitalRead(pbpin[i]); // read the push button
-  if (reading != pbstate[i]) {          // state has changed
-    pbstate[i] = reading;
-    if (!reading) pbtime[i] = millis(); // HL transition, start timer
-    else {                              // LH transition, store push time
-      int timepushed = millis() - pbtime[i];
-      if      (timepushed > (int)LONG_PRESS)  return 1; // value is only here for one loop cycle
-      else if (timepushed > (int)SHORT_PRESS) return 0; // value is only here for one loop cycle
-      else                                    return 2; // not pushed
+void read_pb() {
+  for (byte i=0; i<numpb; i++) {
+    byte reading = digitalRead(pbpin[i]); // read the push button
+    if (reading != pbstate[i]) {          // state has changed
+      pbstate[i] = reading;
+      if (!reading) pbtime[i] = millis(); // HL transition, start timer
+      else {                              // LH transition, store push time
+        int timepushed = millis() - pbtime[i];
+        if      (timepushed > (int)LONG_PRESS)  return 1; // value is only here for one loop cycle
+        else if (timepushed > (int)SHORT_PRESS) return 0; // value is only here for one loop cycle
+        else                                    return 2; // pressed too short
+      }
     }
+    else return 2; // not pressed
   }
-  else return 2; // not pushed
 }
 
 void loop() {
