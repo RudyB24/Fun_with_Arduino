@@ -28,9 +28,9 @@ void setup() {
 ///////////////////////////////////////////////////////////////////////////////////
 byte read_pb(byte i) {
   byte reading = digitalRead(pbpin[i]); // read the push button
-  if (reading != pbstate[i]) {           // state has changed
+  if (reading != pbstate[i]) {          // state has changed
     pbstate[i] = reading;
-    if (!reading) pbtime[i] = millis();  // HL transition, start timer
+    if (!reading) pbtime[i] = millis(); // HL transition, start timer
     else {                              // LH transition, store push time
       int timepushed = millis() - pbtime[i];
       if      (timepushed > (int)LONG_PRESS)  return 1; // value is only here for one loop cycle
@@ -47,7 +47,7 @@ void loop() {
       Serial.print("PB");
       Serial.print(i);
       if (!pb[i]) Serial.println(" short"); // 0=short press
-      else        Serial.println(" long");  // 1= long press
+      else        Serial.println(" long");  // 1=long press
     }
   }
 }
