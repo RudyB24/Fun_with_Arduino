@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <Servo.h>
+
 // Ruud Boer, 2023, July
 // Demo box with 6 LEDs, 2 pushbuttons, 2switches, 1 potmeter, 1 encoder, 1 servo
 
@@ -26,34 +29,40 @@
 #define SHORT_PRESS    200 // [ms]
 #define LONG_PRESS    2000 // [ms]
 
-// The pin numbers are for the demo box with the flatcable in the aluminium case
 #define SERVO_PIN       12 
 #define ENCA_PIN        14 // A0 Encoder A or Data
 #define ENCB_PIN        15 // A1 Encoder B or Clock
 #define POTM_PIN        17 // A3 Potentiometer Analog In
-byte swpin[]     = {8,9};      // SW0, SW1 input pins
-byte pbpin[]     = {10,11,16}; // PB0, PB1, encoder input pins
-byte digledpin[] = {2,4,7,13}; // digital LED outputs pins, 13 is PCB LED
-byte pwmledpin[] = {3,5,6};    // pwm LED output pins NOTE: marked ~ , don't use pins 9,10 with servo.h
+
+int swpin[]     = {8,9};      // SW0, SW1 input pins
+int pbpin[]     = {10,11,16}; // PB0, PB1, encoder input pins
+int digledpin[] = {2,4,7,13}; // digital LED outputs pins, 13 is PCB LED
+int pwmledpin[] = {3,5,6};    // pwm LED output pins NOTE: marked ~ but don't use pins 9,10 with servo.h
+
+/*
+#define LED_SW0   pwmledpin[0] // fades on off with SW1
+#define LED_SW1   pwmledpin[1] // fades on off with SW2
+#define LED_POTM  pwmledpin[2] // brightness follows potmeter
+#define LED_PB0   digledpin[0] // TO BE DEFINED WHAT IT DOES
+#define LED_PB1   digledpin[1] // TO BB DEFINED WHAT IT DOES
+#define LED_BLINK digledpin[2] // blinks with [ms] interval which is changed with the encoder 
+*/
 
 ////////////////////////
 // End of configuration
 ////////////////////////
 
-#include <Arduino.h>
-#include <Servo.h>
-
 Servo servo; // A servo is declared with the name 'servo'
-const int numsw     = sizeof(swpin);
-const int numpb     = sizeof(pbpin);
-const int numdigled = sizeof(digledpin);
-const int numpwmled = sizeof(pwmledpin);
-byte sw[numsw], swchange[numsw]; // swchange: 0=HL, 1=LH, 2=none
-byte pb[numpb], pbstate[numpb], pbstateold[numpb]; // pushbuttons
-byte servovalue = 90, servotarget = 90;
-byte encA, encAold, encB;
-byte blinking;
-byte digled[numdigled], pwmledtarget[numpwmled], pwmledvalue[numpwmled];
+const int numsw     = sizeof(swpin)/sizeof(int);     // sizeof returns # of bytes in memory,
+const int numpb     = sizeof(pbpin)/sizeof(int);     // so we need to devide by sizeof(int)
+const int numdigled = sizeof(digledpin)/sizeof(int); // to get the # of entries in an array
+const int numpwmled = sizeof(pwmledpin)/sizeof(int);
+int sw[numsw], swchange[numsw]; // swchange: 0=HL, 1=LH, 2=none
+int pb[numpb], pbstate[numpb];  // pushbuttons
+int servovalue = 90, servotarget = 90;
+int encA, encAold, encB;
+int blinking;
+int digled[numdigled], pwmledtarget[numpwmled], pwmledvalue[numpwmled];
 int analogreading, encvalue = BLINK_OFF, encvalueold = BLINK_OFF;
 unsigned int st = 1; // states & transitions
 unsigned long timetofade, timetoblink, timetomoveservo, encrottime;
@@ -62,9 +71,9 @@ unsigned long swtime[numsw], pbtime[numpb];
 void setup() {
   pinMode(ENCA_PIN, INPUT_PULLUP);
   pinMode(ENCB_PIN, INPUT_PULLUP);
-  for (byte i=0; i<numpb;  i++) pinMode( pbpin[i], INPUT_PULLUP);
-  for (byte i=0; i<numsw;  i++) pinMode( swpin[i], INPUT_PULLUP);
-  for (byte i=0; i<numdigled; i++) pinMode(digledpin[i], OUTPUT);
+  for (int i=0; i<numpb;  i++) pinMode( pbpin[i], INPUT_PULLUP);
+  for (int i=0; i<numsw;  i++) pinMode( swpin[i], INPUT_PULLUP);
+  for (int i=0; i<numdigled; i++) pinMode(digledpin[i], OUTPUT);
   // pwm_pin[] are not specified as OUTPUT, they are analogWrite() PWM pins
   servo.attach(SERVO_PIN, 1000, 2000); //servo connected (pin, [us] pulse min, [us] pulse max)
   Serial.begin(9600);
@@ -76,15 +85,15 @@ void setup() {
 // Function: read and store the states and changes of the switches, debounced
 //////////////////////////////////////////////////////////////////////////////
 void read_sw() {
-  for (byte i=0; i<numsw; i++) {
-    byte reading = digitalRead(swpin[i]);
+  for (int i=0; i<numsw; i++) {
+    int reading = digitalRead(swpin[i]);
     if(sw[i]==reading) {
       swtime[i] = millis();
       swchange[i] = 2; // 2=no change
     }
     else if(millis() > swtime[i] + (unsigned long)DEBOUNCE) {
-      sw[i]        = reading; // store the current state, 0 or 1
-      swchange[i]  = reading; // is 0=HL or 1=LH after a change for one loop cycle, is 2 when no change
+      sw[i]        = reading; // store the current state 0 or 1
+      swchange[i]  = reading; // is either 0 or 1 after a change, is 2 after no change
     }
   }
 }
@@ -93,19 +102,19 @@ void read_sw() {
 // Function: detect pushbutton presses and store 0=short-, 1=long-, 2=no press
 ///////////////////////////////////////////////////////////////////////////////
 void read_pb() {
-  for (byte i=0; i<numpb; i++) {  
-    pbstate[i] = digitalRead(pbpin[i]); // read the push button
-    if(pbstate[i] != pbstateold[i]) {   // state has changed
-      pbstateold[i] = pbstate[i];
-      if(pbstate[i]==0) pbtime[i] = millis(); // HL transition, start timer
-      else {                                  // LH transition, store push time
+  for (int i=0; i<numpb; i++) {  
+    int reading = digitalRead(pbpin[i]); // read the push button
+    if(reading != pbstate[i]) {   // state has changed
+      pbstate[i] = reading;
+      if(!reading) pbtime[i] = millis(); // HL transition, start timer
+      else {                             // LH transition, store push time
         int timepushed = millis() - pbtime[i];
         if     (timepushed > (int)LONG_PRESS)  pb[i] = 1; // value is only here for one loop cycle
         else if(timepushed > (int)SHORT_PRESS) pb[i] = 0; // value is only here for one loop cycle
-        else                                   pb[i] = 2; // not pushed
+        else                                   pb[i] = 2; // pressed too short
       }
     }
-    else pb[i] = 2; // not pushed
+    else pb[i] = 2; // not pressed
   }
 }
 
@@ -222,7 +231,7 @@ void loop() {
 ///////////////////////
   if (millis() > timetofade) {
     timetofade = millis() + (unsigned long)FADE_INTERVAL;
-    for (byte i=0; i<numpwmled; i++) {  
+    for (int i=0; i<numpwmled; i++) {  
       if(pwmledvalue[i] < pwmledtarget[i]) pwmledvalue[i]++;
       if(pwmledvalue[i] > pwmledtarget[i]) pwmledvalue[i]--;
     }
@@ -258,7 +267,7 @@ void loop() {
 ////////////////////////////////////////////////////
 // Write the PWM- and digital values to the led outputs
 ////////////////////////////////////////////////////
-  for (byte i=0; i<numpwmled; i++) analogWrite(pwmledpin[i], pwmledvalue[i]);
-  for (byte i=0; i<numdigled; i++) digitalWrite(digledpin[i], digled[i]);
+  for (int i=0; i<numpwmled; i++) analogWrite(pwmledpin[i], pwmledvalue[i]);
+  for (int i=0; i<numdigled; i++) digitalWrite(digledpin[i], digled[i]);
 
 } // end loop
