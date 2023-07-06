@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 // Ruud Boer, 2023, July
 // Demo box with 6 LEDs, 2 pushbuttons, 2switches, 1 potmeter, 1 encoder, 1 servo
 
@@ -28,32 +26,24 @@
 #define SHORT_PRESS    200 // [ms]
 #define LONG_PRESS    2000 // [ms]
 
+// The pin numbers are for the demo box with the flatcable in the aluminium case
 #define SERVO_PIN       12 
 #define ENCA_PIN        14 // A0 Encoder A or Data
 #define ENCB_PIN        15 // A1 Encoder B or Clock
 #define POTM_PIN        17 // A3 Potentiometer Analog In
-
 byte swpin[]     = {8,9};      // SW0, SW1 input pins
 byte pbpin[]     = {10,11,16}; // PB0, PB1, encoder input pins
 byte digledpin[] = {2,4,7,13}; // digital LED outputs pins, 13 is PCB LED
-byte pwmledpin[] = {3,5,6};    // pwm LED output pins NOTE: marked ~ but don't use pins 9,10 with servo.h
-
-/*
-#define LED_SW0   pwmledpin[0] // fades on off with SW1
-#define LED_SW1   pwmledpin[1] // fades on off with SW2
-#define LED_POTM  pwmledpin[2] // brightness follows potmeter
-#define LED_PB0   digledpin[0] // TO BE DEFINED WHAT IT DOES
-#define LED_PB1   digledpin[1] // TO BB DEFINED WHAT IT DOES
-#define LED_BLINK digledpin[2] // blinks with [ms] interval which is changed with the encoder 
-*/
+byte pwmledpin[] = {3,5,6};    // pwm LED output pins NOTE: marked ~ , don't use pins 9,10 with servo.h
 
 ////////////////////////
 // End of configuration
 ////////////////////////
 
+#include <Arduino.h>
 #include <Servo.h>
-Servo servo; // A servo is declared with the name 'servo'
 
+Servo servo; // A servo is declared with the name 'servo'
 const int numsw     = sizeof(swpin);
 const int numpb     = sizeof(pbpin);
 const int numdigled = sizeof(digledpin);
