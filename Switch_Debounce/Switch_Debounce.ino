@@ -6,7 +6,7 @@
 
 #define DEBOUNCE 100 // [ms]
 
-byte sw_pin[] = {8,9}; // Pin numbers of the switches. Table can have any length.
+int sw_pin[] = {8,9}; // Pin numbers of the switches. Table can have any length.
 
 ////////////////////////
 // End of configuration
