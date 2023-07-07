@@ -7,22 +7,22 @@
 #define SHORT_PRESS  100 // [ms]
 #define LONG_PRESS  2000 // [ms]
 
-byte pb_pin[] = {10,11};   // Pin numbers of the pushbuttons
+int pb_pin[] = {10,11};  // Pin numbers of the pushbuttons
 
 ////////////////////////
 // End of configuration
 ////////////////////////
 
 const int numpb = sizeof(pb_pin)/sizeof(int);
-byte pb[numpb], pb_state[numpb]; // pushbutton states
-unsigned long pb_time[numpb];    // pushbutton timers
+int pb[numpb], pb_state[numpb]; // pushbutton states
+unsigned long pb_time[numpb];   // pushbutton timers
 
 void setup() {
   for (byte i=0; i<numpb; i++)  pinMode(pb_pin[i],INPUT_PULLUP);
   Serial.begin(9600);
   Serial.println();
   Serial.println("Started");
-} // End setup()
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function: detect pushbutton presses and store 0=short-, 1=long-, 2=no press
@@ -30,7 +30,7 @@ void setup() {
 void read_pb() {
   for (int i=0; i<numpb; i++) {  
     int reading = digitalRead(pbpin[i]); // read the push button
-    if(reading != pbstate[i]) {   // state has changed
+    if(reading != pbstate[i]) {          // state has changed
       pbstate[i] = reading;
       if(!reading) pbtime[i] = millis(); // HL transition, start timer
       else {                             // LH transition, store push time
